@@ -7,7 +7,8 @@ class Setting():
         self.screen_height = 1000
         self.bg_color = (119,120,230)
         self.bg_image = "images/stars.bmp"
-        # speed of ship
+        # ship Setting
+        self.ship_limit = 3
         self.ship_speed_factor = 2.5
         # Bullet settings
         self.bullet_speed_factor = 1.5
