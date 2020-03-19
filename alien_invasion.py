@@ -5,6 +5,8 @@ import game_functions as gf
 from pygame.sprite import Group
 from background import Background
 from game_stats import GameStats
+from button import Button
+from scoreboard import Scoreboard
 # from alien import Alien
 
 def run_game():
@@ -12,11 +14,14 @@ def run_game():
     pygame.init()
     all_set = Setting()
     screen = pygame.display.set_mode(
-        (all_set.screen_width,all_set.screen_height))
-    pygame.display.set_caption("Alien Invasion")
+        (all_set.screen_width, all_set.screen_height))
 
-    #Create an instance to store game statistics.
-    stats = GameStats(ai_settings)
+    # Make play Button.
+    play_button = Button(all_set, screen, "Play")
+
+    #Create an instance to store game statistics and create a scoreboard
+    stats = GameStats(all_set)
+    sb = Scoreboard(all_set, screen, stats)
 
     #load background image
     bg = Background(all_set,(0,0))
@@ -31,18 +36,23 @@ def run_game():
     aliens = Group()
 
     # create the fleat of aliens.
-    gf.create_fleet(all_set,screen,ship,aliens)
+    # gf.create_fleet(all_set,screen,ship,aliens)
+
+    # load high_score
+    gf.load_high_score(stats)
 
     #Begin the main part.
     while True:
 
-        gf.checks_events(all_set,screen,ship,bullets)
+        gf.checks_events(all_set,screen,ship,bullets,stats, play_button,aliens,sb)
 
         if stats.game_active:
             ship.update()
-            gf.update_bullets(all_set,screen,ship,aliens,bullets)
-            gf.update_aliens(all_set, stats, screen, bullets, ship, aliens)
+            gf.update_bullets(all_set,screen,ship,aliens,bullets,stats,sb)
+            gf.update_aliens(all_set, stats, screen, bullets, ship, aliens,sb)
+        # elif stats.ships_left <= 0:
+        #     stats.reset_stats() # i have to make the play again button
 
-        gf.update_screen(all_set,screen,ship,aliens,bullets,bg)
+        gf.update_screen(all_set,stats, screen,ship,aliens,bullets,bg,play_button,sb)
 
 run_game()

@@ -1,11 +1,13 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Ship():
+class Ship(Sprite):
     """to descibe the feature of ship"""
 
     def __init__(self,all_set,screen):
         """Initalize the feature of ship and
         starting position"""
+        super().__init__()
         self.screen = screen
         self.ai_settings = all_set
 
@@ -14,13 +16,8 @@ class Ship():
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
 
-        # Start each new ship at the bottom center
-        self.rect.centerx = self.screen_rect.centerx
-        self.rect.bottom = self.screen_rect.bottom
-
-        # Store a decimal value for the ship' center.
-        self.center = float(self.rect.centerx)
-        self.bottom = float(self.rect.bottom)
+        # center the ship
+        self.center_ship()
 
         # Movement Flag
         self.moving_right = False
@@ -49,4 +46,10 @@ class Ship():
 
     def center_ship(self):
         """Center the ship on the screen."""
-        self.center = self.screen_rect.centerx
+        # Start each new ship at the bottom center
+        self.rect.centerx = self.screen_rect.centerx
+        self.rect.bottom = self.screen_rect.bottom
+
+        # Store a decimal value for the ship' center.
+        self.center = float(self.rect.centerx)
+        self.bottom = float(self.rect.bottom)
